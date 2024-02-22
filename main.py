@@ -33,11 +33,7 @@ def parse_search_result():
         )
     )
     plus = []
-    products = data["data"]["products"]
-    for product in products:
-        plus.append(product["plu_number"])
-    return plus
-
+    return data["data"]["products"]
 
 def get_anki_plus():
     notes = invoke_anki_connect('findNotes', query='"note:LIDL PLU"')
@@ -49,12 +45,12 @@ def get_anki_plus():
 
 
 def main():
-    current_PLUs = parse_search_result()
+    products = parse_search_result()
     my_PLUs = get_anki_plus()
 
-    for plu in current_PLUs:
-        if str(plu) not in my_PLUs:
-            print("New PLU! {}".format(plu))
+    for product in products:
+        if str(product["plu_number"]) not in my_PLUs:
+            print("New PLU! {} {}".format(product["plu_number"], product["translations"][0]["title"]))
 
 
 # Press the green button in the gutter to run the script.
